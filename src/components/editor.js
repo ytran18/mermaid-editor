@@ -1,7 +1,6 @@
 import React from "react";
 import AceEditor from 'react-ace';
-
-// import { ReactComponent as IconCode } from '../assets/icons/iconCode.svg';
+import { Editor as Monaco } from '@monaco-editor/react'
 
 import 'ace-builds/src-noconflict/mode-typescript';
 import 'ace-builds/src-noconflict/theme-cloud9_day';
@@ -13,20 +12,27 @@ const Editor = (props) => {
 
     const { className, handleChangeCode, handleDownload } = props;
 
+    const options = {
+        readOnly: false,
+        minimap: {
+            enabled: false
+        },
+        fontWeight: '600',
+        fontSize: '14px'
+    }
+
     return (
         <div className="editor">
             <div className="editor-top">
                 <div className="icon">Code</div>
                 <div className=""></div>
             </div>
-            <AceEditor 
-                mode='typescript'
-                theme='cloud9_day'
-                onChange={handleChangeCode}
-                name='ace-editor'
-                fontSize={14}
-                tabSize={4}
+            <Monaco 
                 className={className}
+                defaultLanguage="graphql"
+                onChange={handleChangeCode}
+                options={options}
+
             />
             <div className="editor-bottom">
                 <div className="png-button" onClick={() => handleDownload('svg')}>

@@ -9,7 +9,8 @@
 }
 
 .ace-editor {
-    height: 80% !important;
+    height: 100% !important;
+    font-weight: 600;
 }
 
 .editor-top {
