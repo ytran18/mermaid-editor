@@ -1,7 +1,7 @@
 import React from "react";
 import AceEditor from 'react-ace';
 
-import { ReactComponent as IconCode } from '../assets/icons/iconCode.svg';
+// import { ReactComponent as IconCode } from '../assets/icons/iconCode.svg';
 
 import 'ace-builds/src-noconflict/mode-typescript';
 import 'ace-builds/src-noconflict/theme-cloud9_day';
@@ -16,8 +16,7 @@ const Editor = (props) => {
     return (
         <div className="editor">
             <div className="editor-top">
-                <div className="">Mermaid</div>
-                <div className="icon"> <IconCode /> <span className="span-text">Code</span></div>
+                <div className="icon">Code</div>
                 <div className=""></div>
             </div>
             <AceEditor 

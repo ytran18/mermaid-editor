@@ -1,7 +1,11 @@
 .editor {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 95%;
+    width: 100%;
+    border: 1px solid rgb(219,224,232);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-radius: 10px;
 }
 
 .ace-editor {
@@ -10,8 +14,11 @@
 
 .editor-top {
     display: flex;
-    padding: 5px;
+    padding: 10px 5px;
     align-items: center;
+    background: rgb(229,244,254);
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
 }
 
 .icon {
@@ -19,6 +26,8 @@
     align-items: center;
     justify-content: center;
     margin: 0 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
 }
 
 .span-text {
@@ -26,25 +35,64 @@
 }
 
 .editor-bottom {
-    margin-top: 10px;
+    margin-top: 20px;
+    padding: 0 10px;
     display: flex;
     justify-content: space-between;
     height: 20%;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .png-button {
     padding: 5px;
-    border: 1px solid #333;
-    width: 120px;
+    width: 110px;
     height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 10px;
-    font-size: 14px;
+    border-radius: 5px;
+    font-size: 12px;
     cursor: pointer;
     font-weight: bold;
     text-align: center;
+    background: rgb(54, 123, 245);
+    color: white;
+}
+
+.content {
+    width: 95%;
+    height: 95%;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-radius: 10px;
+    background: white;
+    border: 1px solid rgb(219,224,232);
+}
+
+.content-top {
+    background: rgb(229,244,254);
+    width: 100%;
+    height: 36.5px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.content-text {
+    margin: 0 20px;
+}
+
+.react-transform-wrapper {
+    width: 100% !important;
+    height: calc(100% - 36.5px) !important;
+}
+
+.react-transform-component {
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .mermaid {

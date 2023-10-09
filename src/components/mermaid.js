@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Component } from "react";
+import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 
 import mermaid from 'mermaid'
 
@@ -22,7 +23,16 @@ const Mermaid = React.forwardRef((props, ref) => {
     },[code]);
 
     return (
-        <div ref={ref} id="mermaid-chart" className="mermaid" dangerouslySetInnerHTML={{ __html: code }}></div>
+        <div className="content">
+            <div className="content-top">
+                <div className="content-text">Diagram</div>
+            </div>
+            <TransformWrapper>
+                <TransformComponent>
+                    <div ref={ref} id="mermaid-chart" className="mermaid" dangerouslySetInnerHTML={{ __html: code }}></div>
+                </TransformComponent>
+            </TransformWrapper>
+        </div>
     );
 });
 

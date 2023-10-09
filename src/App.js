@@ -71,7 +71,7 @@ function App() {
                 if (type === 'png') {
                     const a = document.createElement('a');
                     a.href = imgData;
-                    a.download = 'image.png';
+                    a.download = 'mermaid.png';
                     document.body.appendChild(a);
                     a.click();
                 }
@@ -80,7 +80,7 @@ function App() {
                     let clipboardData = new ClipboardItem({ 'image/png': new Blob([dataURItoBlob(imgData)], { type: 'image/png' }) });
     
                     navigator.clipboard.write([clipboardData]).then(function() {
-                        alert('Coppied to clipboard!');
+                        alert('Copied to clipboard!');
                     });
                 }
             }
