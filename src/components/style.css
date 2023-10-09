@@ -1,0 +1,57 @@
+.editor {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.ace-editor {
+    height: 80% !important;
+}
+
+.editor-top {
+    display: flex;
+    padding: 5px;
+    align-items: center;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 20px;
+}
+
+.span-text {
+    margin: 0 5px;
+}
+
+.editor-bottom {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    height: 20%;
+}
+
+.png-button {
+    padding: 5px;
+    border: 1px solid #333;
+    width: 120px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+}
+
+.mermaid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+}

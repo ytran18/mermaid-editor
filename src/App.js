@@ -1,25 +1,108 @@
-import logo from './logo.svg';
+import React, { useState, useRef } from 'react';
+
+import Mermaid from './components/mermaid';
+import Editor from './components/editor';
+
+import 'ace-builds/src-noconflict/mode-typescript';
+import 'ace-builds/src-noconflict/theme-cloud9_day';
+import 'ace-builds/src-noconflict/ext-language_tools';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const [state, setState] = useState({
+        code: ``,
+    });
+
+    const diagramRef = useRef();
+
+    const handleChangeCode = (newCode) => {
+        setState(prev => ({...prev, code: newCode}));
+    };
+
+    const dataURItoBlob = (dataURI) => {
+        var byteString = atob(dataURI.split(',')[1]);
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+        var arrayBuffer = new ArrayBuffer(byteString.length);
+        var uint8Array = new Uint8Array(arrayBuffer);
+      
+        for (var i = 0; i < byteString.length; i++) {
+          uint8Array[i] = byteString.charCodeAt(i);
+        }
+      
+        return new Blob([arrayBuffer], { type: mimeString });
+    }
+
+    const handleDownload = (type) => {
+        if (type === 'svg') {
+            const svg = diagramRef.current.innerHTML;
+            const svgBlob = new Blob([svg], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(svgBlob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'mermaid.svg';
+            document.body.appendChild(a);
+            a.click();
+            URL.revokeObjectURL(url);
+            return;
+        };
+
+        if (type === 'png' || type === 'clipboard') {
+            const svgContainer = document.querySelector('svg[id^="mermaid-"]');
+            const canvas = document.createElement('canvas');
+
+            const viewBox = svgContainer.getAttribute('viewBox').split(' ');
+            const w = parseFloat(viewBox[2]);
+            const h = parseFloat(viewBox[3]);
+
+            canvas.width = w;
+            canvas.height = h;
+
+            const ctx = canvas.getContext('2d');
+
+            const image = new Image();
+            console.log(canvas);
+            image.src = 'data:image/svg+xml;base64,' + btoa(new XMLSerializer().serializeToString(svgContainer));
+            image.onload = function () {
+                ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+                const imgData = canvas.toDataURL('image/png');
+
+                if (type === 'png') {
+                    const a = document.createElement('a');
+                    a.href = imgData;
+                    a.download = 'image.png';
+                    document.body.appendChild(a);
+                    a.click();
+                }
+
+                if (type === 'clipboard') {
+                    let clipboardData = new ClipboardItem({ 'image/png': new Blob([dataURItoBlob(imgData)], { type: 'image/png' }) });
+    
+                    navigator.clipboard.write([clipboardData]).then(function() {
+                        alert('Coppied to clipboard!');
+                    });
+                }
+            }
+            return;
+        }
+
+    }
+
+    return (
+        <div className="App">
+            <div id='ace-editor' className='left-panel'>
+                <Editor 
+                    className='ace-editor'
+                    handleChangeCode={handleChangeCode}
+                    handleDownload={handleDownload}
+                />
+            </div>
+            <div className='right-panel'>
+                <Mermaid code={state.code} ref={diagramRef}/>
+            </div>
+        </div>
+    );
 }
 
 export default App;
