@@ -11,7 +11,7 @@ mermaid.initialize({
 
 const Mermaid = React.forwardRef((props, ref) => {
 
-    const { code } = props;
+    const { code, hanleMessage } = props;
 
     useEffect(() => {
         const mermaidChart = document.getElementById("mermaid-chart");
@@ -26,6 +26,12 @@ const Mermaid = React.forwardRef((props, ref) => {
         <div className="content">
             <div className="content-top">
                 <div className="content-text">Diagram</div>
+                <div 
+                    className="content-text btn-save"
+                    onClick={hanleMessage}
+                >
+                    Save
+                </div>
             </div>
             <TransformWrapper>
                 <TransformComponent>

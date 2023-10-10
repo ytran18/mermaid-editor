@@ -89,6 +89,11 @@ function App() {
 
     }
 
+    const hanleMessage = () => {
+        const message = state.code;
+        window.parent.postMessage(message,"*");
+    }
+
     return (
         <div className="App">
             <div id='ace-editor' className='left-panel'>
@@ -99,7 +104,11 @@ function App() {
                 />
             </div>
             <div className='right-panel'>
-                <Mermaid code={state.code} ref={diagramRef}/>
+                <Mermaid 
+                    code={state.code} 
+                    ref={diagramRef}
+                    hanleMessage={hanleMessage}
+                />
             </div>
         </div>
     );

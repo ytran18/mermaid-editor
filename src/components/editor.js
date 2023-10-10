@@ -25,7 +25,6 @@ const Editor = (props) => {
         <div className="editor">
             <div className="editor-top">
                 <div className="icon">Code</div>
-                <div className=""></div>
             </div>
             <Monaco 
                 className={className}
