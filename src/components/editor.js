@@ -18,7 +18,8 @@ const Editor = (props) => {
             enabled: false
         },
         fontWeight: '600',
-        fontSize: '14px'
+        fontSize: '14px',
+        quickSuggestions: false,
     }
 
     return (
@@ -31,7 +32,6 @@ const Editor = (props) => {
                 defaultLanguage="graphql"
                 onChange={handleChangeCode}
                 options={options}
-
             />
             <div className="editor-bottom">
                 <div className="png-button" onClick={() => handleDownload('svg')}>
