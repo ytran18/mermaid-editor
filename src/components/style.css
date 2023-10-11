@@ -113,3 +113,11 @@
     align-items: center;
     overflow: auto;
 }
+
+.error-icon {
+    display: none;
+}
+
+.error-text:nth-of-type(2) {
+    display: none;
+}
