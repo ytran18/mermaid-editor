@@ -1,10 +1,5 @@
 import React from "react";
-import AceEditor from 'react-ace';
 import { Editor as Monaco } from '@monaco-editor/react'
-
-import 'ace-builds/src-noconflict/mode-typescript';
-import 'ace-builds/src-noconflict/theme-cloud9_day';
-import 'ace-builds/src-noconflict/ext-language_tools';
 
 import './style.css';
 

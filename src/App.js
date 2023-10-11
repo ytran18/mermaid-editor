@@ -3,9 +3,6 @@ import React, { useState, useRef } from 'react';
 import Mermaid from './components/mermaid';
 import Editor from './components/editor';
 
-import 'ace-builds/src-noconflict/mode-typescript';
-import 'ace-builds/src-noconflict/theme-cloud9_day';
-import 'ace-builds/src-noconflict/ext-language_tools';
 import './App.css';
 
 function App() {
