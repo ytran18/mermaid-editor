@@ -15,6 +15,8 @@ const Editor = (props) => {
         fontWeight: '600',
         fontSize: '14px',
         quickSuggestions: false,
+        theme: 'mermaid',
+        overviewRulerLanes: 0
     }
 
     return (

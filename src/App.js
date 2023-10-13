@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import Mermaid from './components/mermaid';
 import Editor from './components/editor';
@@ -91,6 +91,30 @@ function App() {
         window.parent.postMessage(message,"*");
     }
 
+    useEffect(() => {
+        const resizer = document.getElementById('resizeHandler');
+        const element = document.getElementById('ace-editor');
+        if (!resizer || !element) {
+            return;
+        }
+
+        const resize = (e) => {
+            const newWidth = e.pageX - element.getBoundingClientRect().left;
+            if (newWidth > 50) {
+                element.style.width = `${newWidth}px`;
+            }
+        };
+        const stopResize = () => {
+            window.removeEventListener('mousemove', resize);
+        };
+
+        resizer.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            window.addEventListener('mousemove', resize);
+            window.addEventListener('mouseup', stopResize);
+        });
+    }, []);
+
     return (
         <div className="App">
             <div id='ace-editor' className='left-panel'>
@@ -100,6 +124,7 @@ function App() {
                     handleDownload={handleDownload}
                 />
             </div>
+            <div id="resizeHandler" className='resize-handler' />
             <div className='right-panel'>
                 <Mermaid 
                     code={state.code} 
