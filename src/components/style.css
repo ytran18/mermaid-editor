@@ -45,6 +45,10 @@
     border-bottom-right-radius: 10px;
 }
 
+.flex-col {
+    flex-direction: column;
+}
+
 .png-button {
     padding: 5px;
     width: 140px;
@@ -91,8 +95,12 @@
     cursor: pointer;
 }
 
+.content-btn {
+    display: flex;
+}
+
 .content-text {
-    margin: 0 20px;
+    margin: 0 10px;
 }
 
 .react-transform-wrapper {

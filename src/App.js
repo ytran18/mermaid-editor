@@ -91,6 +91,10 @@ function App() {
         window.parent.postMessage(message,"*");
     }
 
+    const handleExit = () => {
+        
+    }
+
     useEffect(() => {
         const resizer = document.getElementById('resizeHandler');
         const element = document.getElementById('ace-editor');
@@ -130,6 +134,7 @@ function App() {
                     code={state.code} 
                     ref={diagramRef}
                     hanleMessage={hanleMessage}
+                    handleExit={handleExit}
                 />
             </div>
         </div>

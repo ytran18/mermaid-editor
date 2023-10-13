@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Editor as Monaco } from '@monaco-editor/react'
+
 
 import './style.css';
 
 const Editor = (props) => {
 
     const { className, handleChangeCode, handleDownload } = props;
+
+    const editorRef = useRef(null);
+
+    useEffect(() => {
+        console.log(editorRef.current.offsetWidth);
+    },[editorRef.current])
 
     const options = {
         readOnly: false,
@@ -20,7 +27,7 @@ const Editor = (props) => {
     }
 
     return (
-        <div className="editor">
+        <div id="editor" ref={editorRef} className="editor">
             <div className="editor-top">
                 <div className="icon">Code</div>
             </div>
@@ -30,7 +37,7 @@ const Editor = (props) => {
                 onChange={handleChangeCode}
                 options={options}
             />
-            <div className="editor-bottom">
+            <div className={`editor-bottom`}>
                 <div className="png-button" onClick={() => handleDownload('svg')}>
                     Save as SVG
                 </div>
