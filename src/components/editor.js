@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from "react";
-import { Editor as Monaco } from '@monaco-editor/react'
 
+import * as monaco from 'monaco-editor';
+
+import { initEditor } from '../assets/mermaidTheme.js';
 
 import './style.css';
 
@@ -12,32 +14,33 @@ const Editor = (props) => {
     const editorRef = useRef(null);
 
     useEffect(() => {
-        console.log(editorRef.current.offsetWidth);
-    },[editorRef.current])
+        const editorContainer = document.getElementById('monaco-mermaid');
+        const monacoEditor = monaco.editor.create(editorContainer, {
+            language: 'mermaid',
+            minimap: {
+                enabled: false
+            },
+            fontWeight: '600',
+            fontSize: '14px',
+            overviewRulerLanes: 0,
+            quickSuggestions: false,
+        });
 
-    const options = {
-        readOnly: false,
-        minimap: {
-            enabled: false
-        },
-        fontWeight: '600',
-        fontSize: '14px',
-        quickSuggestions: false,
-        theme: 'mermaid',
-        overviewRulerLanes: 0
-    }
+        monacoEditor.onDidChangeModelContent(() => {
+            const newValue = monacoEditor.getValue();
+            handleChangeCode(newValue);
+        });
+
+        monaco.editor.setTheme('mermaid')
+        initEditor(monaco);
+    },[])
 
     return (
         <div id="editor" ref={editorRef} className="editor">
             <div className="editor-top">
                 <div className="icon">Code</div>
             </div>
-            <Monaco 
-                className={className}
-                defaultLanguage="graphql"
-                onChange={handleChangeCode}
-                options={options}
-            />
+            <div id="monaco-mermaid" style={{height: '600px'}}></div>
             <div className={`editor-bottom`}>
                 <div className="png-button" onClick={() => handleDownload('svg')}>
                     Save as SVG
