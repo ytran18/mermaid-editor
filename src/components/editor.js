@@ -26,9 +26,17 @@ const Editor = (props) => {
             quickSuggestions: false,
         });
 
+        let isChangePending = false;
+
         monacoEditor.onDidChangeModelContent(() => {
-            const newValue = monacoEditor.getValue();
-            handleChangeCode(newValue);
+            if (!isChangePending) {
+                isChangePending = true;
+                setTimeout(() => {
+                    const newValue = monacoEditor.getValue();
+                    handleChangeCode(newValue);
+                    isChangePending = false;
+                }, 0);
+            }
         });
 
         monaco.editor.setTheme('mermaid')
@@ -40,7 +48,7 @@ const Editor = (props) => {
             <div className="editor-top">
                 <div className="icon">Code</div>
             </div>
-            <div id="monaco-mermaid" style={{height: '600px'}}></div>
+            <div id="monaco-mermaid" style={{height: '100%'}}></div>
             <div className={`editor-bottom`}>
                 <div className="png-button" onClick={() => handleDownload('svg')}>
                     Save as SVG

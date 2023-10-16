@@ -30,6 +30,7 @@ function App() {
         return new Blob([arrayBuffer], { type: mimeString });
     }
 
+    // handle download mermaid
     const handleDownload = (type) => {
         if (type === 'svg') {
             const svg = diagramRef.current.innerHTML;
@@ -86,6 +87,7 @@ function App() {
 
     }
 
+    // handle contact from pms to mermaid 
     const hanleMessage = () => {
         const message = state.code;
         window.parent.postMessage(message,"*");

@@ -247,7 +247,6 @@ export const initEditor = monacoEditor => {
           ])
         )
       )
-      // eslint-disable-next-line unicorn/no-array-reduce
       .reduce(
         (overallKeywords, nextKeyword) => ({
           ...overallKeywords,
