@@ -24,10 +24,10 @@ cp ${dist}/index.bundle.js.LICENSE.txt ./ > /dev/null
 cd ${destFolder}/../..
 
 # Copy to Web-Front
-export desktopPath="${curDir}/../PMS-WebFront/public"
-if [[ -d "$desktopPath" ]]; then
-    mkdir -p ${desktopPath}/ > /dev/null
-    cp -R ./release/mermaid ${desktopPath}/ > /dev/null
+export webfrontPath="${curDir}/../PMS-WebFront/public"
+if [[ -d "$webfrontPath" ]]; then
+    mkdir -p ${webfrontPath}/ > /dev/null
+    cp -R ./release/mermaid ${webfrontPath}/ > /dev/null
 fi
 
 # Copy to Wrapper.Dev
