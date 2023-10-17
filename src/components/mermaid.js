@@ -1,4 +1,4 @@
-import React, { useEffect, Component, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 
 import mermaid from 'mermaid'
@@ -25,7 +25,6 @@ const Mermaid = React.forwardRef((props, ref) => {
     // handle mermaid
     useEffect(() => {
         const mermaidChart = document.getElementById("mermaid-chart");
-        console.log(mermaidChart);
         if (mermaidChart) {
             mermaidChart.removeAttribute("data-processed");
             mermaid.contentLoaded();

@@ -132,12 +132,12 @@
 }
 
 .monaco-editor:nth-of-type(1) {
-    display: none;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .monaco-editor:nth-of-type(2) {
-    width: 100% !important;
-    height: 100% !important;
+    display: none;
 }
 
 .overflow-guard {

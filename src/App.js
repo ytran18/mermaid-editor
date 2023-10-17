@@ -125,7 +125,6 @@ function App() {
         <div className="App">
             <div id='ace-editor' className='left-panel'>
                 <Editor 
-                    className='ace-editor'
                     handleChangeCode={handleChangeCode}
                     handleDownload={handleDownload}
                 />
