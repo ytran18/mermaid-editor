@@ -8,14 +8,14 @@ import './style.css';
 
 const Editor = (props) => {
 
-    const { className, handleChangeCode, handleDownload } = props;
+    const { handleChangeCode, handleDownload } = props;
     // comment
 
     const editorRef = useRef(null);
 
     useEffect(() => {
         const editorContainer = document.getElementById('monaco-mermaid');
-        const monacoEditor = monaco.editor.create(editorContainer, {
+        editorRef.current = monaco.editor.create(editorContainer, {
             language: 'mermaid',
             minimap: {
                 enabled: false
@@ -26,25 +26,21 @@ const Editor = (props) => {
             quickSuggestions: false,
         });
 
-        let isChangePending = false;
-
-        monacoEditor.onDidChangeModelContent(() => {
-            if (!isChangePending) {
-                isChangePending = true;
-                setTimeout(() => {
-                    const newValue = monacoEditor.getValue();
-                    handleChangeCode(newValue);
-                    isChangePending = false;
-                }, 0);
-            }
+        editorRef.current.onDidChangeModelContent(() => {
+            const newValue = editorRef.current.getValue();
+            handleChangeCode(newValue);
         });
 
         monaco.editor.setTheme('mermaid')
         initEditor(monaco);
+
+        return () => {
+            editorRef.current.dispose();
+        }
     },[])
 
     return (
-        <div id="editor" ref={editorRef} className="editor">
+        <div id="editor" className="editor">
             <div className="editor-top">
                 <div className="icon">Code</div>
             </div>
