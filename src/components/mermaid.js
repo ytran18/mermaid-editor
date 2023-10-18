@@ -26,7 +26,6 @@ const Mermaid = React.forwardRef((props, ref) => {
             syntaxTree = await mermaid.parse(value);
             return syntaxTree
         } catch(error) {
-            // console.error('erorr', error);
             return false;
         }
     }
@@ -47,10 +46,7 @@ const Mermaid = React.forwardRef((props, ref) => {
                 }
             };
 
-            if (config && typeof config === 'string' && config.trim() !== '') {
-                mermaid.initialize(jsonConfig);
-            }
-
+            
             if (mermaidChart && mode === 'mermaid') {
                 const isValidContent = await onCheckError(value);
                 if(isValidContent) {
@@ -63,15 +59,22 @@ const Mermaid = React.forwardRef((props, ref) => {
                     if(counterRef.current > 2) return;
                     ref.current.innerHTML = state.diagramCode;
                 }
-
-                mermaid.contentLoaded();
-                mermaidChart.removeAttribute("data-processed");
             }
-    
+            
             mermaid.parseError = (err) => {
                 if (code === '') return;
                 setState(prev => ({...prev, errMessage: err?.message}));
             }
+
+            try {
+                mermaid.initialize(jsonConfig);
+                ref.current.innerHTML = value;
+            } catch (err) {
+                ref.current.innerHTML = value;
+            }
+
+            mermaid.contentLoaded();
+            mermaidChart.removeAttribute("data-processed");
             
         }
         onHandleMermaidData(code);
@@ -106,9 +109,7 @@ const Mermaid = React.forwardRef((props, ref) => {
             </div>
             <TransformWrapper>
                 <TransformComponent>
-                    <div ref={ref} id="mermaid-chart" className={`mermaid ${state.isErr ? 'opacity': ''}`}>
-                    </div>
-
+                    <div ref={ref} id="mermaid-chart" className={`mermaid ${state.isErr ? 'opacity': ''}`}></div>
                     <div className="err-wrapper">
                         { state.isErr && (
                             state.errArray?.map((item, index) => {
