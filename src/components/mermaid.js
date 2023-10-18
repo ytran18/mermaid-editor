@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
-
 import mermaid from 'mermaid'
 
 import './style.css';
@@ -21,46 +20,63 @@ const Mermaid = React.forwardRef((props, ref) => {
         errMode: false,
     });
 
+    const onCheckError = async (value) => {
+        let syntaxTree;
+        try {
+            syntaxTree = await mermaid.parse(value);
+            return syntaxTree
+        } catch(error) {
+            // console.error('erorr', error);
+            return false;
+        }
+    }
+
+    const counterRef = useRef(0);
+
     // handle mermaid
     useEffect(() => {
-        const mermaidChart = document.getElementById("mermaid-chart");
-        if (mode !== 'mermaid') return;
+        const onHandleMermaidData = async (value) => {
+            const mermaidChart = document.getElementById("mermaid-chart");
+            let jsonConfig;
 
-        if (mermaidChart && mode === 'mermaid') {
-            mermaidChart.removeAttribute("data-processed");
-            mermaid.contentLoaded();
-        }
+            if (config && typeof config === 'string' && config.trim() !== '') {
+                try {
+                    jsonConfig = JSON.parse(config);
+                } catch (err) {
+                    console.log("Parse Err");
+                }
+            };
 
-        let jsonConfig;
-        if (config && typeof config === 'string' && config.trim() !== '') {
-            try {
-                jsonConfig = JSON.parse(config);
-            } catch (err) {
-                console.log("Parse Err");
+            if (config && typeof config === 'string' && config.trim() !== '') {
+                mermaid.initialize(jsonConfig);
             }
-        };
 
-        let isErr = false;
+            if (mermaidChart && mode === 'mermaid') {
+                const isValidContent = await onCheckError(value);
+                if(isValidContent) {
+                    counterRef.current = 0;
+                    ref.current.innerHTML = value;
+                    setState(prev => ({...prev, diagramCode: value, isErr: false}));
+                } else {
+                    counterRef.current = counterRef.current + 1;
+                    setState(prev => ({...prev, isErr: true}));
+                    if(counterRef.current > 2) return;
+                    ref.current.innerHTML = state.diagramCode;
+                }
 
-        mermaid.parseError = (err) => {
-            if (code === '') return;
-            isErr = true;
-            setState(prev => ({...prev, errMessage: err?.message, isErr: true }));
-        }
-
-        setTimeout(() => {
-            if (isErr === false) {
-                setState(prev => ({ ...prev, isErr: false, codeNotErr: code, errMode: false }));
+                mermaid.contentLoaded();
+                mermaidChart.removeAttribute("data-processed");
             }
-        }, 0);
-
-        if (config && typeof config === 'string' && config.trim() !== '') {
-            mermaid.initialize(jsonConfig);
+    
+            mermaid.parseError = (err) => {
+                if (code === '') return;
+                setState(prev => ({...prev, errMessage: err?.message}));
+            }
+            
         }
+        onHandleMermaidData(code);
+    },[code, state.isErr, config]);
 
-    },[code, config]);
-
-    // split err message
     useEffect(() => {
         const lines = state.errMessage.split('\n');
         setState(prev => ({...prev, errArray: lines}));
@@ -90,7 +106,9 @@ const Mermaid = React.forwardRef((props, ref) => {
             </div>
             <TransformWrapper>
                 <TransformComponent>
-                    <div ref={ref} id="mermaid-chart" className={`mermaid ${state.isErr ? 'opacity': ''}`} dangerouslySetInnerHTML={{ __html: code }}></div>
+                    <div ref={ref} id="mermaid-chart" className={`mermaid ${state.isErr ? 'opacity': ''}`}>
+                    </div>
+
                     <div className="err-wrapper">
                         { state.isErr && (
                             state.errArray?.map((item, index) => {
