@@ -11,24 +11,34 @@ mermaid.initialize({
 
 const Mermaid = React.forwardRef((props, ref) => {
 
-    const { code, hanleMessage, handleExit } = props;
+    const { code, hanleMessage, handleExit, mode, config } = props;
 
     const [state, setState] = useState({
         errMessage: '',
         isErr: false,
         errArray: [],
         codeNotErr: ``,
-        diagramCode: ``,
         errMode: false,
     });
 
     // handle mermaid
     useEffect(() => {
         const mermaidChart = document.getElementById("mermaid-chart");
-        if (mermaidChart) {
+        if (mode !== 'mermaid') return;
+
+        if (mermaidChart && mode === 'mermaid') {
             mermaidChart.removeAttribute("data-processed");
             mermaid.contentLoaded();
         }
+
+        let jsonConfig;
+        if (config && typeof config === 'string' && config.trim() !== '') {
+            try {
+                jsonConfig = JSON.parse(config);
+            } catch (err) {
+                console.log("Parse Err");
+            }
+        };
 
         let isErr = false;
 
@@ -44,9 +54,11 @@ const Mermaid = React.forwardRef((props, ref) => {
             }
         }, 0);
 
-        setState(prev => ({...prev, diagramCode: code}))
+        if (config && typeof config === 'string' && config.trim() !== '') {
+            mermaid.initialize(jsonConfig);
+        }
 
-    },[code]);
+    },[code, config]);
 
     // split err message
     useEffect(() => {
@@ -54,23 +66,6 @@ const Mermaid = React.forwardRef((props, ref) => {
         setState(prev => ({...prev, errArray: lines}));
     },[state.errMessage]);
 
-    // useEffect(() => {
-    //     console.log("error");
-    //     const mermaidChart = document.getElementById("mermaid-chart");
-    //     if (state.isErr && state.codeNotErr !== '') {
-    //         mermaid.render('mermaid-chart', state.codeNotErr)
-    //         .then(({ svg, bindFunctions }) => {
-    //             const chartWrapper = document.createElement("div");
-    //             chartWrapper.innerHTML = svg;
-    //             mermaidChart.appendChild(chartWrapper);
-    //             bindFunctions?.(chartWrapper);
-    //             console.log(svg);
-    //         })
-    //         .catch((err) => {
-    //             console.error("Mermaid rendering error:", err);
-    //         });
-    //     }
-    // },[state.isErr]);
 
     return (
         <div className="content">

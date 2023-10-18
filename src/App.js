@@ -9,12 +9,22 @@ function App() {
 
     const [state, setState] = useState({
         code: ``,
+        mode: 'mermaid',
+        config: `{\n \t"theme": "default" \n}`,
     });
 
     const diagramRef = useRef();
 
     const handleChangeCode = (newCode) => {
         setState(prev => ({...prev, code: newCode}));
+    };
+
+    const handleChangeMode = (mode) => {
+        setState(prev => ({...prev, mode: mode}));
+    };
+
+    const handleChangeConfig = (config) => {
+        setState(prev => ({...prev, config: config}));
     };
 
     const dataURItoBlob = (dataURI) => {
@@ -60,7 +70,6 @@ function App() {
             const ctx = canvas.getContext('2d');
 
             const image = new Image();
-            console.log(canvas);
             image.src = 'data:image/svg+xml;base64,' + btoa(new XMLSerializer().serializeToString(svgContainer));
             image.onload = function () {
                 ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
@@ -127,12 +136,18 @@ function App() {
                 <Editor 
                     handleChangeCode={handleChangeCode}
                     handleDownload={handleDownload}
+                    handleChangeMode={handleChangeMode}
+                    handleChangeConfig={handleChangeConfig}
+                    code={state.code}
+                    config={state.config}
                 />
             </div>
             <div id="resizeHandler" className='resize-handler' />
             <div className='right-panel'>
                 <Mermaid 
+                    mode={state.mode}
                     code={state.code} 
+                    config={state.config}
                     ref={diagramRef}
                     hanleMessage={hanleMessage}
                     handleExit={handleExit}
