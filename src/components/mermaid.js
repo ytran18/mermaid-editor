@@ -60,17 +60,19 @@ const Mermaid = React.forwardRef((props, ref) => {
                     ref.current.innerHTML = state.diagramCode;
                 }
             }
-            
+
             mermaid.parseError = (err) => {
                 if (code === '') return;
                 setState(prev => ({...prev, errMessage: err?.message}));
             }
 
-            try {
-                mermaid.initialize(jsonConfig);
-                ref.current.innerHTML = value;
-            } catch (err) {
-                ref.current.innerHTML = value;
+            if (mode === 'config') {
+                try {
+                    mermaid.initialize(jsonConfig);
+                    ref.current.innerHTML = value;
+                } catch (err) {
+                    ref.current.innerHTML = value;
+                }
             }
 
             mermaid.contentLoaded();
