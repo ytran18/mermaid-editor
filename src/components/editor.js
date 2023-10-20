@@ -15,6 +15,7 @@ const Editor = (props) => {
     
     const [state, setState] = useState({
         tabActive: 0,
+        count: 0,
     })
 
     const options = {
@@ -64,11 +65,15 @@ const Editor = (props) => {
     },[state.tabActive]);
 
     useEffect(() => {
-        editorRef.current.setValue(code || '');
-
-        const model = editorRef.current.getModel();
-        const position = model.getPositionAt(model.getValueLength());
-        editorRef.current.setPosition(position);
+        console.log(code);
+        if (state.count < 3) {
+            editorRef.current.setValue(code || '');
+            console.log(code);
+            const model = editorRef.current.getModel();
+            const position = model.getPositionAt(model.getValueLength());
+            editorRef.current.setPosition(position);
+            setState(prev => ({...prev, count: prev.count + 1}));
+        };
     },[code])
 
     return (
