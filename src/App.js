@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 
 import Mermaid from './components/mermaid';
 import Editor from './components/editor';
+import Message from './components/Message';
 
 import './App.css';
 
@@ -11,6 +12,16 @@ function App() {
         code: ``,
         mode: 'mermaid',
         config: `{\n \t"theme": "default" \n}`,
+        isAutoSave: false,
+        isClose: false,
+        isSave: false,
+        isSaveChange: false,
+        isCloseChange: false,
+        stateConnect: false,
+        fileName: '',
+        isVisibleMessage: false,
+        savedCode: ``,
+        saveConfig: ``,
     });
 
     const diagramRef = useRef();
@@ -26,6 +37,7 @@ function App() {
     const handleChangeConfig = (config) => {
         setState(prev => ({...prev, config: config}));
     };
+    
 
     const dataURItoBlob = (dataURI) => {
         var byteString = atob(dataURI.split(',')[1]);
@@ -97,14 +109,98 @@ function App() {
     }
 
     // handle contact from pms to mermaid 
-    const hanleMessage = () => {
-        const message = state.code;
-        window.parent.postMessage(message,"*");
-    }
+    const handleSave = () => {
+        setState(prev => ({
+            ...prev, 
+            isSave: true, 
+            isSaveChange: 
+            !prev.isSaveChange,
+            savedCode: state.code,
+            saveConfig: state.config,
+        }));
+    };
 
     const handleExit = () => {
-        
+        if ((state.code === state.savedCode && state.config === state.saveConfig) || state.isAutoSave) {
+            setState(prev => ({...prev, isClose: true, isCloseChange: !prev.isCloseChange, isVisibleMessage: false}));
+            return;
+        } 
+        setState(prev => ({...prev, isVisibleMessage: true}));
+    };
+
+    const handleCLoseBtn = () => {
+        setState(prev => ({...prev, isClose: true, isCloseChange: !prev.isCloseChange, isVisibleMessage: false}));
     }
+
+    const handleDiscardChanges = () => {
+        setState(prev => ({...prev, isClose: true, isCloseChange: !prev.isCloseChange, isVisibleMessage: false}));
+    }
+
+    const handleCancel = () => {
+        setState(prev => ({...prev, isVisibleMessage: false}));
+    };
+
+    const handleAutoSave = (event) => {
+        setState(prev => ({...prev, isAutoSave: event.target.checked}));
+    };
+
+    const handleMessage = () => {
+        const data = {
+            type: 'mermaid',
+            isClose: state.isClose,
+            isSave: state.isSave,
+            code: state.code,
+            config: state.config,
+            isAutoSave: state.isAutoSave,
+            state: state.stateConnect ? 'CONNECTED' : 'CONNECTING',
+        }
+
+        window.parent.postMessage(JSON.stringify(data), "*");
+    };
+
+    useEffect(() => {
+        handleMessage();
+    },[state.isSaveChange, state.isCloseChange, state.stateConnect]);
+
+    useEffect(() => {
+        if (state.isAutoSave) {
+            const interval = setInterval(() => {
+                handleMessage();
+            }, 1000);
+
+            return () => {
+                clearInterval(interval);
+            }
+        }
+    },[state.isAutoSave])
+
+    useEffect(() => {
+        const handleIframeMessage = (event) => {
+            let parentData;
+            let content;
+            if (event.origin !== window.location.origin) {
+                parentData = JSON.parse(event?.data);
+                if (parentData?.data?.content) {
+                    content = JSON.parse(parentData?.data?.content);
+                }
+                setState(prev => ({
+                    ...prev, 
+                    fileName: parentData?.data?.name, 
+                    stateConnect: true,
+                    code: content?.data, 
+                    config: content?.config || `{\n \t"theme": "default" \n}`,
+                    savedCode: content?.data,
+                    saveConfig: content?.config || `{\n \t"theme": "default" \n}`,
+                }));
+            };
+        };
+      
+        window.addEventListener('message', handleIframeMessage);
+      
+        return () => {
+            window.removeEventListener('message', handleIframeMessage);
+        };
+    },[])
 
     useEffect(() => {
         const resizer = document.getElementById('resizeHandler');
@@ -149,10 +245,21 @@ function App() {
                     code={state.code} 
                     config={state.config}
                     ref={diagramRef}
-                    hanleMessage={hanleMessage}
+                    handleSave={handleSave}
                     handleExit={handleExit}
+                    handleAutoSave={handleAutoSave}
+                    isAutoSave={state.isAutoSave}
+                    fileName={state.fileName}
+                    hasChanged={state.hasChanged}
+                    handleCLoseBtn={handleCLoseBtn}
                 />
             </div>
+            {state.isVisibleMessage  && (
+                <Message 
+                    handleDiscardChanges={handleDiscardChanges}
+                    handleCancel={handleCancel}
+                />
+            )}
         </div>
     );
 }

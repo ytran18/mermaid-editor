@@ -66,7 +66,7 @@
     justify-content: space-between;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
-    align-items: end;
+    align-items: flex-end;
 }
 
 .flex-col {
@@ -117,14 +117,43 @@
     border-radius: 5px;
     color: white;
     cursor: pointer;
+    user-select: none;
+    font-size: 0.875rem;
+}
+
+.btn-save:hover {
+    opacity: 0.7;
+}
+
+.btn-exit {
+    padding: 5px 10px;
+    background: rgb(245, 101, 101);
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+    font-size: 0.875rem;
+}
+
+.btn-exit:hover {
+    opacity: 0.7;
 }
 
 .content-btn {
     display: flex;
+    align-items: center;
+}
+
+.hidden {
+    display: none;
 }
 
 .content-text {
     margin: 0 10px;
+}
+
+.content-text input {
+    cursor: pointer;
 }
 
 .react-transform-wrapper {
@@ -184,4 +213,92 @@
 
 .opacity {
     opacity: 0.4;
+}
+
+.auto-save {
+    display: flex;
+    align-items: center;
+}
+
+.save-text {
+    font-size: 0.875rem;
+    margin-left: 5px;
+}
+
+/* message */
+
+.message {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgb(89,89,89);
+    background-color:rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    z-index: 50;
+}
+
+.message-wrapper {
+    width: 300px;
+    height: 120px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.btn {
+    display: flex;
+    margin-top: 15px;
+}
+
+.btn-discard {
+    background: rgb(238,238,238);
+    padding: 7px 10px;
+    border-radius: 5px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.btn-discard:hover {
+    background: rgb(229,229,229);
+}
+
+.btn-cancel {
+    background: rgb(76,142,250);
+    padding: 7px 10px;
+    border-radius: 5px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    color: white;
+    margin-left: 5px;
+}
+
+/* close btn */
+
+.close-btn {
+    display: none;
+}
+
+@media all and (max-width: 768px){
+    .close-btn {
+        display: block;
+        margin-right: 5px;
+        cursor: pointer;
+    }
+
+    .content-btn {
+        display: none;
+    }
 }

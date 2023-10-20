@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import mermaid from 'mermaid'
 
+import { ReactComponent as IconClose } from '../assets/icons/iconClose.svg';
+
 import './style.css';
 
 mermaid.initialize({
@@ -10,7 +12,7 @@ mermaid.initialize({
 
 const Mermaid = React.forwardRef((props, ref) => {
 
-    const { code, hanleMessage, handleExit, mode, config } = props;
+    const { code, handleSave, handleExit, mode, config, isAutoSave, handleAutoSave, fileName, handleCLoseBtn } = props;
 
     const [state, setState] = useState({
         errMessage: '',
@@ -36,16 +38,6 @@ const Mermaid = React.forwardRef((props, ref) => {
     useEffect(() => {
         const onHandleMermaidData = async (value) => {
             const mermaidChart = document.getElementById("mermaid-chart");
-            let jsonConfig;
-
-            if (config && typeof config === 'string' && config.trim() !== '') {
-                try {
-                    jsonConfig = JSON.parse(config);
-                } catch (err) {
-                    console.log("Parse Err");
-                }
-            };
-
             
             if (mermaidChart && mode === 'mermaid') {
                 const isValidContent = await onCheckError(value);
@@ -66,15 +58,6 @@ const Mermaid = React.forwardRef((props, ref) => {
                 setState(prev => ({...prev, errMessage: err?.message}));
             }
 
-            if (mode === 'config') {
-                try {
-                    mermaid.initialize(jsonConfig);
-                    ref.current.innerHTML = value;
-                } catch (err) {
-                    ref.current.innerHTML = value;
-                }
-            }
-
             mermaid.contentLoaded();
             mermaidChart.removeAttribute("data-processed");
             
@@ -83,30 +66,61 @@ const Mermaid = React.forwardRef((props, ref) => {
     },[code, state.isErr, config]);
 
     useEffect(() => {
+        const mermaidChart = document.getElementById("mermaid-chart");
+        let jsonConfig;
+
+        if (config && typeof config === 'string' && config.trim() !== '') {
+            try {
+                jsonConfig = JSON.parse(config);
+            } catch (err) {
+                console.log("Parse Err");
+            }
+        };
+
+        if (mode === 'config' || config) {
+            try {
+                mermaid.initialize(jsonConfig);
+                ref.current.innerHTML = code;
+            } catch (err) {
+                ref.current.innerHTML = code;
+            }
+        }
+
+        mermaid.contentLoaded();
+        mermaidChart.removeAttribute("data-processed");
+    },[config])
+
+    useEffect(() => {
         const lines = state.errMessage.split('\n');
         setState(prev => ({...prev, errArray: lines}));
     },[state.errMessage]);
 
-
     return (
         <div className="content">
             <div className="content-top">
-                <div className="content-text">Diagram</div>
+                <div className="content-text">{fileName}</div>
                 <div 
                     className="content-btn"
                 >
+                    <div className="content-text auto-save">
+                        <input type="checkbox" value={isAutoSave} onChange={handleAutoSave} />
+                        <span className="save-text">Auto save</span>
+                    </div>
                     <div 
-                        className="content-text btn-save"
-                        onClick={hanleMessage}
+                        className={`content-text btn-save ${isAutoSave ? 'hidden' : ''}`}
+                        onClick={handleSave}
                     >
                         Save
                     </div>
                     <div 
-                        className="content-text btn-save"
+                        className="content-text btn-exit"
                         onClick={handleExit}
                     >
                         Exit
                     </div>
+                </div>
+                <div className="close-btn">
+                    <IconClose onClick={handleCLoseBtn}/>
                 </div>
             </div>
             <TransformWrapper>

@@ -61,7 +61,15 @@ const Editor = (props) => {
         return () => {
             editorRef.current.dispose();
         }
-    },[state.tabActive])
+    },[state.tabActive]);
+
+    useEffect(() => {
+        editorRef.current.setValue(code || '');
+
+        const model = editorRef.current.getModel();
+        const position = model.getPositionAt(model.getValueLength());
+        editorRef.current.setPosition(position);
+    },[code])
 
     return (
         <div id="editor" className="editor">
