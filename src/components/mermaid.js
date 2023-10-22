@@ -10,7 +10,7 @@ mermaid.initialize({
 
 const Mermaid = React.forwardRef((props, ref) => {
 
-    const { code, handleSave, handleExit, mode, config, isAutoSave, handleAutoSave, fileName, handleCLoseBtn } = props;
+    const { code, mode, config, fileName } = props;
 
     const [state, setState] = useState({
         errMessage: '',
@@ -97,31 +97,6 @@ const Mermaid = React.forwardRef((props, ref) => {
         <div className="content">
             <div className="content-top">
                 <div className="content-text">{fileName}</div>
-                <div 
-                    className="content-btn"
-                >
-                    <div className="content-text auto-save">
-                        <input type="checkbox" value={isAutoSave} onChange={handleAutoSave} />
-                        <span className="save-text">Auto save</span>
-                    </div>
-                    <div 
-                        className={`content-text btn-save ${isAutoSave ? 'hidden' : ''}`}
-                        onClick={handleSave}
-                    >
-                        Save
-                    </div>
-                    <div 
-                        className="content-text btn-exit"
-                        onClick={handleExit}
-                    >
-                        Exit
-                    </div>
-                </div>
-                <div className="close-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" width='20' heigh='20' viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" onClick={handleCLoseBtn}>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </div>
             </div>
             <TransformWrapper>
                 <TransformComponent>

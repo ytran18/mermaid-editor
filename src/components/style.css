@@ -1,7 +1,7 @@
 .editor {
     display: flex;
     flex-direction: column;
-    height: 95%;
+    height: 98%;
     width: 100%;
     border: 1px solid rgb(219,224,232);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -15,12 +15,23 @@
 
 .editor-top {
     display: flex;
-    /* padding: 10px 5px; */
-    height: 45px;
-    align-items: center;
+    justify-content: space-between;
+    height: 36.5px;
     background: rgb(229,244,254);
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
+}
+
+.top-left {
+    display: flex;
+    height: 100%;
+    align-items: center;
+}
+
+.top-right {
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .icon-left {
@@ -74,9 +85,8 @@
 }
 
 .png-button {
-    padding: 5px;
-    width: 140px;
-    height: 30px;
+    width: 60px;
+    height: 25px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -85,13 +95,16 @@
     cursor: pointer;
     font-weight: bold;
     text-align: center;
-    background: rgb(54, 123, 245);
+    background: rgb(67, 153, 225);
     color: white;
+    margin: 0 5px;
 }
 
 .content {
-    width: 95%;
-    height: 95%;
+    width: 100%;
+    height: 98%;
+    margin-left: 8px;
+    margin-right: 5px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     border-radius: 10px;
     background: white;
@@ -166,6 +179,12 @@
     height: 100% !important;
 }
 
+.overflow-guard {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    height: 100% !important;
+}
+
 .mermaid {
     width: 100%;
     height: 100%;
@@ -187,6 +206,8 @@
 .monaco-editor:nth-of-type(1) {
     width: 100% !important;
     height: 100% !important;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .monaco-editor:nth-of-type(2) {
@@ -223,38 +244,6 @@
 .save-text {
     font-size: 0.875rem;
     margin-left: 5px;
-}
-
-/* message */
-
-.message {
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgb(89,89,89);
-    background-color:rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    z-index: 50;
-}
-
-.message-wrapper {
-    width: 300px;
-    height: 120px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    font-size: 0.875rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
 }
 
 .btn {

@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 
 import Mermaid from './components/mermaid';
 import Editor from './components/editor';
-import Message from './components/Message';
 
 import './App.css';
 
@@ -12,21 +11,24 @@ function App() {
         code: ``,
         mode: 'mermaid',
         config: `{\n \t"theme": "default" \n}`,
-        isAutoSave: false,
-        isClose: false,
-        isSave: false,
-        isSaveChange: false,
-        isCloseChange: false,
         stateConnect: false,
         fileName: '',
-        isVisibleMessage: false,
-        savedCode: ``,
-        saveConfig: ``,
     });
 
     const diagramRef = useRef();
 
     const handleChangeCode = (newCode) => {
+        const data = {
+            type: 'mermaid',
+            code: newCode,
+            config: state.config,
+            state: 'CONNECTED',
+            isCopyToClipboard: 'NOT COPPIED',
+            isChanged: true,
+        }
+
+        window.parent.postMessage(JSON.stringify(data), "*");
+
         setState(prev => ({...prev, code: newCode}));
     };
 
@@ -35,9 +37,31 @@ function App() {
     };
 
     const handleChangeConfig = (config) => {
+        const data = {
+            type: 'mermaid',
+            code: state.code,
+            config: config,
+            state: 'CONNECTED',
+            isCopyToClipboard: 'NOT COPPIED',
+            isChanged: true,
+        }
+
+        window.parent.postMessage(JSON.stringify(data), "*");
+
         setState(prev => ({...prev, config: config}));
     };
     
+    const handleCopyToClipboard = (isCopied) => {
+        const data = {
+            type: 'mermaid',
+            code: state.code,
+            config: state.config,
+            state: 'CONNECTED',
+            isCopyToClipboard: isCopied,
+        }
+
+        window.parent.postMessage(JSON.stringify(data), "*");
+    }
 
     const dataURItoBlob = (dataURI) => {
         var byteString = atob(dataURI.split(',')[1]);
@@ -96,89 +120,44 @@ function App() {
                 }
 
                 if (type === 'clipboard') {
-                    let clipboardData = new ClipboardItem({ 'image/png': new Blob([dataURItoBlob(imgData)], { type: 'image/png' }) });
-    
-                    navigator.clipboard.write([clipboardData]).then(function() {
-                        alert('Copied to clipboard!');
-                    });
+                    try {
+                        let clipboardData = new ClipboardItem({ 'image/png': new Blob([dataURItoBlob(imgData)], { type: 'image/png' }) });
+        
+                        navigator.clipboard.write([clipboardData]).then(function() {
+                            handleCopyToClipboard('SUCCESS');
+                        });
+                    } catch (err) {
+                        handleCopyToClipboard('FAILED');
+                    }
                 }
             }
             return;
         }
-
     }
 
     // handle contact from pms to mermaid 
-    const handleSave = () => {
-        setState(prev => ({
-            ...prev, 
-            isSave: true, 
-            isSaveChange: 
-            !prev.isSaveChange,
-            savedCode: state.code,
-            saveConfig: state.config,
-        }));
-    };
-
-    const handleExit = () => {
-        if ((state.code === state.savedCode && state.config === state.saveConfig) || state.isAutoSave) {
-            setState(prev => ({...prev, isClose: true, isCloseChange: !prev.isCloseChange, isVisibleMessage: false}));
-            return;
-        } 
-        setState(prev => ({...prev, isVisibleMessage: true}));
-    };
-
-    const handleCLoseBtn = () => {
-        setState(prev => ({...prev, isClose: true, isCloseChange: !prev.isCloseChange, isVisibleMessage: false}));
-    }
-
-    const handleDiscardChanges = () => {
-        setState(prev => ({...prev, isClose: true, isCloseChange: !prev.isCloseChange, isVisibleMessage: false}));
-    }
-
-    const handleCancel = () => {
-        setState(prev => ({...prev, isVisibleMessage: false}));
-    };
-
-    const handleAutoSave = (event) => {
-        setState(prev => ({...prev, isAutoSave: event.target.checked}));
-    };
-
-    const handleMessage = () => {
+    useEffect(() => {
         const data = {
             type: 'mermaid',
-            isClose: state.isClose,
-            isSave: state.isSave,
             code: state.code,
             config: state.config,
-            isAutoSave: state.isAutoSave,
             state: state.stateConnect ? 'CONNECTED' : 'CONNECTING',
+            isCopyToClipboard: 'NOT COPPIED',
         }
-
         window.parent.postMessage(JSON.stringify(data), "*");
-    };
-
-    useEffect(() => {
-        handleMessage();
-    },[state.isSaveChange, state.isCloseChange, state.stateConnect]);
-
-    useEffect(() => {
-        if (state.isAutoSave) {
-            const interval = setInterval(() => {
-                handleMessage();
-            }, 1000);
-
-            return () => {
-                clearInterval(interval);
-            }
-        }
-    },[state.isAutoSave])
+    },[state.stateConnect])
 
     useEffect(() => {
         const handleIframeMessage = (event) => {
             let parentData;
             let content;
-            if (event.origin !== window.location.origin) {
+            let isOrigin = event.origin === window.location.origin;
+            
+            if (event?.data?.isDev) {
+                isOrigin = event.origin !== window.location.origin;
+            }
+            if (isOrigin) {
+                console.log("MERMAID: ", event);
                 parentData = JSON.parse(event?.data);
                 if (parentData?.data?.content) {
                     content = JSON.parse(parentData?.data?.content);
@@ -187,16 +166,14 @@ function App() {
                     ...prev, 
                     fileName: parentData?.data?.name, 
                     stateConnect: true,
-                    code: content?.data, 
+                    code: content?.code || '', 
                     config: content?.config || `{\n \t"theme": "default" \n}`,
-                    savedCode: content?.data,
-                    saveConfig: content?.config || `{\n \t"theme": "default" \n}`,
                 }));
             };
         };
       
         window.addEventListener('message', handleIframeMessage);
-      
+        console.log("MERMAID LISTEN");
         return () => {
             window.removeEventListener('message', handleIframeMessage);
         };
@@ -245,21 +222,9 @@ function App() {
                     code={state.code} 
                     config={state.config}
                     ref={diagramRef}
-                    handleSave={handleSave}
-                    handleExit={handleExit}
-                    handleAutoSave={handleAutoSave}
-                    isAutoSave={state.isAutoSave}
                     fileName={state.fileName}
-                    hasChanged={state.hasChanged}
-                    handleCLoseBtn={handleCLoseBtn}
                 />
             </div>
-            {state.isVisibleMessage  && (
-                <Message 
-                    handleDiscardChanges={handleDiscardChanges}
-                    handleCancel={handleCancel}
-                />
-            )}
         </div>
     );
 }
