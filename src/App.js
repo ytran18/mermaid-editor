@@ -152,14 +152,15 @@ function App() {
             let parentData;
             let content;
             let isOrigin = event.origin === window.location.origin;
-            
+
             if (event?.data?.isDev) {
                 isOrigin = event.origin !== window.location.origin;
             }
             if (isOrigin) {
-                console.log("MERMAID: ", event);
+                if (typeof event?.data !== 'string') return;
                 parentData = JSON.parse(event?.data);
                 if (parentData?.data?.content) {
+                    if (typeof parentData?.data?.content !== 'string') return;
                     content = JSON.parse(parentData?.data?.content);
                 }
                 setState(prev => ({
@@ -173,7 +174,6 @@ function App() {
         };
       
         window.addEventListener('message', handleIframeMessage);
-        console.log("MERMAID LISTEN");
         return () => {
             window.removeEventListener('message', handleIframeMessage);
         };
