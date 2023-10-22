@@ -15,12 +15,12 @@ mkdir -p ${destFolder} > /dev/null
 
 cd ${destFolder}
 
-cp ${dist}/*.ttf ./ > /dev/null
-cp ${dist}/main.css ./ > /dev/null
-cp ${dist}/index.html ./ > /dev/null
-cp ${dist}/index.bundle.js ./ > /dev/null
-cp ${dist}/index.bundle.js.LICENSE.txt ./ > /dev/null
-
+# cp ${dist}/*.ttf ./ > /dev/null
+# cp ${dist}/main.css ./ > /dev/null
+# cp ${dist}/index.html ./ > /dev/null
+# cp ${dist}/index.bundle.js ./ > /dev/null
+# cp ${dist}/index.bundle.js.LICENSE.txt ./ > /dev/null
+cp ${dist}/*.* ./ > /dev/null
 
 # Copy to Web-Front
 export webfrontPath="${curDir}/../PMS-WebFront/public"
