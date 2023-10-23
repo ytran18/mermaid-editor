@@ -151,14 +151,14 @@ function App() {
         const handleIframeMessage = (event) => {
             let parentData;
             let content;
-            let isOrigin = event.origin === window.location.origin;
 
-            if (event?.data?.isDev) {
+            if (typeof event?.data !== 'string') return;
+            parentData = JSON.parse(event?.data);
+            let isOrigin = event.origin === window.location.origin;
+            if (parentData?.isDev) {
                 isOrigin = event.origin !== window.location.origin;
             }
             if (isOrigin) {
-                if (typeof event?.data !== 'string') return;
-                parentData = JSON.parse(event?.data);
                 if (parentData?.data?.content) {
                     if (typeof parentData?.data?.content !== 'string') return;
                     content = JSON.parse(parentData?.data?.content);

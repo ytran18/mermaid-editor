@@ -3,6 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 import * as monaco from 'monaco-editor';
 import { Editor as MonacoEditor } from "@monaco-editor/react";
 
+import Actions from "./actions.js";
+
 import { initEditor } from '../assets/mermaidTheme.js';
 
 import './style.css';
@@ -16,6 +18,7 @@ const Editor = (props) => {
     const [state, setState] = useState({
         tabActive: 0,
         count: 0,
+        showActions: false,
     })
 
     const options = {
@@ -91,6 +94,14 @@ const Editor = (props) => {
                     >
                         Config
                     </div>
+                </div>
+                <div className="more">
+                    <svg xmlns="http://www.w3.org/2000/svg" width='22' height='22' fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" onClick={() => setState(prev => ({...prev, showActions: !prev.showActions}))}>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                    </svg>
+                    {state.showActions && (
+                        <Actions handleDownload={handleDownload}/>
+                    )}
                 </div>
                 <div className="top-right">
                     <div className="png-button" onClick={() => handleDownload('svg')}>
