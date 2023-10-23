@@ -86,13 +86,13 @@ const Editor = (props) => {
                         className={`icon-left ${state.tabActive === 0 ? 'tab-active' : ''}`}
                         onClick={() => setState(prev => ({...prev, tabActive: 0}))}
                         >
-                        Code
+                        {localStorage.getItem('zlanguage') === 'vn' ? 'Mã' : 'Code'}
                     </div>
                     <div
                         className={`icon-right ${state.tabActive === 1 ? 'tab-active' : ''}`}
                         onClick={() => setState(prev => ({...prev, tabActive: 1}))}
                     >
-                        Config
+                        {localStorage.getItem('zlanguage') === 'vn' ? 'Cấu hình' : 'Config'}
                     </div>
                 </div>
                 <div className="more">
