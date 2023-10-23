@@ -155,10 +155,12 @@ function App() {
             if (typeof event?.data !== 'string') return;
             parentData = JSON.parse(event?.data);
             let isOrigin = event.origin === window.location.origin;
-            if (parentData?.isDev) {
-                isOrigin = event.origin !== window.location.origin;
-            }
-            if (isOrigin) {
+
+            // if (parentData?.isDev) {
+            //     isOrigin = event.origin !== window.location.origin;
+            // }
+            
+            if (isOrigin && parentData?.type === 'mermaid' || parentData?.isDev) {
                 if (parentData?.data?.content) {
                     if (typeof parentData?.data?.content !== 'string') return;
                     content = JSON.parse(parentData?.data?.content);
