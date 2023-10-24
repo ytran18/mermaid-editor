@@ -200,6 +200,15 @@
     position: relative;
 }
 
+[aria-roledescription="gantt"], [aria-roledescription="flowchart-v2"], [aria-roledescription="sequence"],
+[aria-roledescription="classDiagram"], [aria-roledescription="stateDiagram"], [aria-roledescription="er"],
+[aria-roledescription="journey"], [aria-roledescription="quadrantChart"], [aria-roledescription="c4"] {
+    height: 100%;
+    width: 100%;
+    max-width: none !important;
+    max-height: none !important;
+}
+
 .error-icon {
     display: none;
 }
