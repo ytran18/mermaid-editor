@@ -18,6 +18,8 @@ function App() {
     const diagramRef = useRef();
 
     const handleChangeCode = (newCode) => {
+        const svg = handleDownload('svg', true)
+        console.log('svg', svg);
         const data = {
             type: 'mermaid',
             code: newCode,
@@ -25,6 +27,7 @@ function App() {
             state: 'CONNECTED',
             isCopyToClipboard: 'NOT COPPIED',
             isChanged: true,
+            svg: svg,
         }
 
         window.parent.postMessage(JSON.stringify(data), "*");
@@ -77,12 +80,13 @@ function App() {
     }
 
     // handle download mermaid
-    const handleDownload = (type) => {
+    const handleDownload = (type, notDownload) => {
         if (type === 'svg') {
             const svg = diagramRef.current.innerHTML;
             const svgBlob = new Blob([svg], { type: 'image/svg+xml' });
             const url = URL.createObjectURL(svgBlob);
 
+            if(notDownload) return svg;
             const a = document.createElement('a');
             a.href = url;
             a.download = 'mermaid.svg';
