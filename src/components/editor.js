@@ -29,7 +29,7 @@ const Editor = (props) => {
         fontWeight: '600',
         fontSize: '14px',
         overviewRulerLanes: 0,
-        quickSuggestions: false,
+        quickSuggestions: true,
         scrollBeyondLastLine: false,
     }
 
@@ -49,7 +49,7 @@ const Editor = (props) => {
             fontWeight: '600',
             fontSize: '14px',
             overviewRulerLanes: 0,
-            quickSuggestions: false,
+            quickSuggestions: true,
             scrollBeyondLastLine: false,
             value: code || '',
         });
