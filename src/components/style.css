@@ -337,3 +337,49 @@
     flex-direction: column;
     align-items: center;
 }
+
+/* actions zoom */
+.zoom-action {
+    position: absolute;
+    width: 100px;
+    height: 35px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5px;
+    right: 15px;
+    bottom: 15px;
+    background: rgb(67, 153, 225);
+    border-radius: 4px;
+    z-index: 100;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+    transition: -webkit-transform 0.7s 0.1s ease;
+    transition: transform .7s 0.1s ease;
+}
+
+.zoom-in {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: rgb(238,238,238);
+}
+
+.zoom-out {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: rgb(220,220,220);
+}
+
+.reset {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: rgb(238,238,238);
+}
+
+.zoom-in:hover, .zoom-out:hover, .reset:hover {
+    color: #fff;
+}
