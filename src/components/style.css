@@ -166,6 +166,15 @@
     display: none;
 }
 
+.flex-more {
+    display: flex;
+    height: 100%;
+    position: relative;
+    align-items: center;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
 .content-text {
     margin: 0 10px;
 }
@@ -200,9 +209,9 @@
     position: relative;
 }
 
-[aria-roledescription="gantt"], [aria-roledescription="flowchart-v2"], [aria-roledescription="sequence"],
-[aria-roledescription="classDiagram"], [aria-roledescription="stateDiagram"], [aria-roledescription="er"],
-[aria-roledescription="journey"], [aria-roledescription="quadrantChart"], [aria-roledescription="c4"] {
+[aria-roledescription="sequence"], [aria-roledescription="classDiagram"], [aria-roledescription="flowchart-v2"],
+[aria-roledescription="er"], [aria-roledescription="quadrantChart"], [aria-roledescription="c4"],
+[aria-roledescription="gantt"] {
     height: 100%;
     width: 100%;
     max-width: none !important;
@@ -326,9 +335,9 @@
 .actions {
     background: #fff;
     width: 90px;
-    height: 110px;
+    height: 140px;
     position: absolute;
-    bottom: -100px;
+    bottom: -130px;
     z-index: 20;
     right: 0;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);

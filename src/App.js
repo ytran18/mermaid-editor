@@ -19,7 +19,6 @@ function App() {
 
     const handleChangeCode = (newCode) => {
         const svg = handleDownload('svg', true)
-        console.log('svg', svg);
         const data = {
             type: 'mermaid',
             code: newCode,
