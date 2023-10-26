@@ -224,6 +224,21 @@ export const initEditor = monacoEditor => {
       typeKeywords: ["sankey-beta"],
       blockKeywords: [],
       keywords: []
+    },
+    timeline: {
+      typeKeywords: ["timeline"],
+      blockKeywords: [],
+      keywords: []
+    },
+    mindmap: {
+      typeKeywords: ["mindmap"],
+      blockKeywords: [],
+      keywords: []
+    },
+    quadrantChart: {
+      typeKeywords: ["quadrantChart"],
+      blockKeywords: [],
+      keywords: []
     }
   }
 
@@ -268,6 +283,9 @@ export const initEditor = monacoEditor => {
         [/^\s*er(Diagram)?/, "typeKeyword", "erDiagram"],
         [/^\s*requirement(Diagram)?/, "typeKeyword", "requirementDiagram"],
         [/^\s*sankey-beta/m, "typeKeyword", "sankey"],
+        [/^\s*timeline/m, "typeKeyword", "journey"],
+        [/^\s*mindmap/m, "typeKeyword", "flowchart"],
+        [/^\s*quadrantChart/m, "typeKeyword", "journey"],
         [
           /^\s*(C4Context|C4Container|C4Component|C4Dynamic|C4Deployment)/m,
           "typeKeyword",
