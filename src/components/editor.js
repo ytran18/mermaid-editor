@@ -80,10 +80,6 @@ const Editor = (props) => {
             resizeObserver.observe(editorContainer.parentElement);
         };
 
-        window.addEventListener("error", function (e) {
-            console.error("MU: ",e.message);
-        });
-
         return () => {
             editorRef.current.dispose();
         }
@@ -92,11 +88,13 @@ const Editor = (props) => {
     useEffect(() => {
         if (state.count < 3) {
             editorRef.current.setValue(code || '');
-            const model = editorRef.current.getModel();
+            const model = editorRef.current.getModel(); // get value of monaco editor
             
             // get value of first line
-            const firstLineText = model.getValue().split('\n')[0];
-            const letters = firstLineText?.split(' ')?.[0]?.replace(/[^a-zA-Z0-9]/g, '')
+            const removeTitleText = model.getValue().replace(/---[\s\S]*?---/g, '').trim(); // remove title if has
+            const removeInitText = removeTitleText.replace(/%%(.*?)%%/gs, '').trim(); // remove init if has
+            const firstLineText = removeInitText.split('\n')[0]; // get first word of first line
+            const letters = firstLineText?.split(' ')?.[0]?.replace(/[^a-zA-Z0-9]/g, '') // remove all character except letters and numbers
             const position = model.getPositionAt(model.getValueLength());
             editorRef.current.setPosition(position);
             setState(prev => ({...prev, count: prev.count + 1, url: letters.trim()}));
@@ -115,7 +113,7 @@ const Editor = (props) => {
     
         if (divRef.current) {
             resizeObserver.observe(divRef.current);
-        }
+        };
     
         return () => {
             resizeObserver.disconnect();
@@ -124,23 +122,31 @@ const Editor = (props) => {
 
     useEffect(() => {
         if (state.count > 2) {
-            const model = editorRef.current.getModel();
-            const firstLineText = model.getValue().split('\n')[0];
-            const letters = firstLineText?.split(' ')?.[0]?.replace(/[^a-zA-Z0-9]/g, '')
+            const model = editorRef.current.getModel(); // get value of monaco editor
+            const removeTitleText = model.getValue().replace(/---[\s\S]*?---/g, '').trim(); // remove title if has
+            const removeInitText = removeTitleText.replace(/%%(.*?)%%/gs, '').trim(); //remove init if has
+            const firstLineText = removeInitText.split('\n')[0]; // get first word of first line
+            const letters = firstLineText?.split(' ')?.[0]?.replace(/[^a-zA-Z0-9]/g, ''); // remove all character except letters and numbers
             setState(prev => ({...prev, count: prev.count + 1, url: letters.trim()}));
         }
     },[code]);
 
     const handleDocument = () => {
+        if (state.tabActive === 1) {
+            const configUrl = "https://mermaid.js.org/config/configuration.html";
+            window.open(configUrl, '_blank');
+            return;
+        };
+
         const openurl = {
-            "C4Context": "https://mermaid.js.org/syntax/c4.html",
+            "C4Context": "https://mermaid.js.org/syntax/c4.html#c4-system-context-diagram-c4context",
             "gitGraph": "https://mermaid.js.org/syntax/gitgraph.html",
             "journey": "https://mermaid.js.org/syntax/userJourney.html",
             "gantt": "https://mermaid.js.org/syntax/gantt.html",
             "mindmap": "https://mermaid.js.org/syntax/mindmap.html",
             "graph": "https://mermaid.js.org/syntax/flowchart.html",
             "quadrantChart": "https://mermaid.js.org/syntax/quadrantChart.html",
-            "stateDiagram-v2": "https://mermaid.js.org/syntax/stateDiagram.html",
+            "stateDiagramv2": "https://mermaid.js.org/syntax/stateDiagram.html",
             "stateDiagram": "https://mermaid.js.org/syntax/stateDiagram.html",
             "timeline": "https://mermaid.js.org/syntax/timeline.html",
             "classDiagram": "https://mermaid.js.org/syntax/classDiagram.html",
@@ -148,7 +154,13 @@ const Editor = (props) => {
             "pie": "https://mermaid.js.org/syntax/pie.html",
             "sequenceDiagram": "https://mermaid.js.org/syntax/sequenceDiagram.html",
             "flowchart": "https://mermaid.js.org/syntax/flowchart.html",
-        }[state.url] || 'https://mermaid.js.org/';
+            "requirementDiagram": "https://mermaid.js.org/syntax/requirementDiagram.html",
+            "C4Container": "https://mermaid.js.org/syntax/c4.html#c4-container-diagram-c4container",
+            "C4Component": "https://mermaid.js.org/syntax/c4.html#c4-component-diagram-c4component",
+            "C4Dynamic": "https://mermaid.js.org/syntax/c4.html#c4-dynamic-diagram-c4dynamic",
+            "C4Deployment": "https://mermaid.js.org/syntax/c4.html#c4-deployment-diagram-c4deployment",
+            "sankeybeta": "https://mermaid.js.org/syntax/sankey.html",
+        }[state.url] || 'https://mermaid.js.org/intro/';
 
         window.open(openurl, '_blank');
     };

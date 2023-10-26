@@ -211,7 +211,7 @@
 
 [aria-roledescription="sequence"], [aria-roledescription="classDiagram"], [aria-roledescription="flowchart-v2"],
 [aria-roledescription="er"], [aria-roledescription="quadrantChart"], [aria-roledescription="c4"],
-[aria-roledescription="gantt"] {
+[aria-roledescription="gantt"], [aria-roledescription="requirement"] {
     height: 100%;
     width: 100%;
     max-width: none !important;
