@@ -392,3 +392,15 @@
 .zoom-in:hover, .zoom-out:hover, .reset:hover {
     color: #fff;
 }
+
+/*  */
+
+.monaco-scrollable-element {
+    width: calc(100% - 68px) !important;
+}
+
+.scrollbar {
+    &.horizontal {
+        bottom: 35px !important;
+    }
+}

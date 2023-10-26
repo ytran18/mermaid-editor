@@ -25,7 +25,7 @@
 .right-panel {
   flex: 1 1 0%;
   width: 100%;
-  min-width: 390px;
+  min-width: 565px;
   height: 100%;
   display: flex;
   justify-content: center;
