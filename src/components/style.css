@@ -88,6 +88,23 @@
     flex-direction: column;
 }
 
+.png-button:nth-of-type(1) {
+    width: 60px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    background: rgb(67, 153, 225);
+    color: white;
+    margin: 0 5px 0 0;
+    user-select: none;
+}
+
 .png-button {
     width: 60px;
     height: 25px;

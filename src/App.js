@@ -13,6 +13,7 @@ function App() {
         config: `{\n \t"theme": "default" \n}`,
         stateConnect: false,
         fileName: '',
+        lang: 'en',
     });
 
     const diagramRef = useRef();
@@ -168,12 +169,14 @@ function App() {
                     if (typeof parentData?.data?.content !== 'string') return;
                     content = JSON.parse(parentData?.data?.content);
                 }
+                console.log(parentData?.lang);
                 setState(prev => ({
                     ...prev, 
                     fileName: parentData?.data?.name, 
                     stateConnect: true,
                     code: content?.code || '', 
                     config: content?.config || `{\n \t"theme": "default" \n}`,
+                    lang: parentData?.lang,
                 }));
             };
         };
@@ -218,6 +221,7 @@ function App() {
                     handleChangeConfig={handleChangeConfig}
                     code={state.code}
                     config={state.config}
+                    lang={state.lang}
                 />
             </div>
             <div id="resizeHandler" className='resize-handler' />

@@ -11,7 +11,7 @@ import './style.css';
 
 const Editor = (props) => {
     
-    const { handleChangeCode, handleDownload, handleChangeMode, handleChangeConfig, code, config } = props;
+    const { handleChangeCode, handleDownload, handleChangeMode, handleChangeConfig, code, config, lang } = props;
     
     const editorRef = useRef(null);
     const divRef = useRef(null); // get width of editor
@@ -173,16 +173,16 @@ const Editor = (props) => {
                         className={`icon-left ${state.tabActive === 0 ? 'tab-active' : ''}`}
                         onClick={() => setState(prev => ({...prev, tabActive: 0}))}
                         >
-                        {localStorage.getItem('zlanguage') === 'vn' ? 'Mã' : 'Code'}
+                        {lang === 'vn' ? 'Mã' : 'Code'}
                     </div>
                     <div
                         className={`icon-right ${state.tabActive === 1 ? 'tab-active' : ''}`}
                         onClick={() => setState(prev => ({...prev, tabActive: 1}))}
                     >
-                        {localStorage.getItem('zlanguage') === 'vn' ? 'Cấu hình' : 'Config'}
+                        {lang === 'vn' ? 'Cấu hình' : 'Config'}
                     </div>
                 </div>
-                <div className={`more ${state.divWidth < 510 ? 'flex-more' : ''}`}>
+                <div className={`more ${state.divWidth < 518 ? 'flex-more' : ''}`}>
                     <svg xmlns="http://www.w3.org/2000/svg" width='22' height='22' fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" onClick={() => setState(prev => ({...prev, showActions: !prev.showActions}))}>
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                     </svg>
@@ -190,7 +190,7 @@ const Editor = (props) => {
                         <Actions handleDownload={handleDownload} handleDocument={handleDocument}/>
                     )}
                 </div>
-                <div className={`top-right ${state.divWidth < 510 ? 'hidden': ''}`}>
+                <div className={`top-right ${state.divWidth < 518 ? 'hidden': ''}`}>
                     <div className="png-button" onClick={() => handleDownload('png')}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" width='18' height='18' viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style={{marginRight: '3px'}}>
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
