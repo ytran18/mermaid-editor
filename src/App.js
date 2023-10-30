@@ -14,6 +14,8 @@ function App() {
         stateConnect: false,
         fileName: '',
         lang: 'en',
+        isMobile: false,
+        type: '',
     });
 
     const diagramRef = useRef();
@@ -52,6 +54,10 @@ function App() {
         window.parent.postMessage(JSON.stringify(data), "*");
 
         setState(prev => ({...prev, config: config}));
+    };
+
+    const handleTypeMermaid = (value) => {
+        setState(prev => ({...prev, type: value}));
     };
     
     const handleCopyToClipboard = (isCopied) => {
@@ -169,7 +175,7 @@ function App() {
                     if (typeof parentData?.data?.content !== 'string') return;
                     content = JSON.parse(parentData?.data?.content);
                 }
-                console.log(parentData?.lang);
+
                 setState(prev => ({
                     ...prev, 
                     fileName: parentData?.data?.name, 
@@ -177,6 +183,7 @@ function App() {
                     code: content?.code || '', 
                     config: content?.config || `{\n \t"theme": "default" \n}`,
                     lang: parentData?.lang,
+                    isMobile: parentData?.isMobile,
                 }));
             };
         };
@@ -222,6 +229,7 @@ function App() {
                     code={state.code}
                     config={state.config}
                     lang={state.lang}
+                    handleTypeMermaid={handleTypeMermaid}
                 />
             </div>
             <div id="resizeHandler" className='resize-handler' />
@@ -232,6 +240,8 @@ function App() {
                     config={state.config}
                     ref={diagramRef}
                     fileName={state.fileName}
+                    isMobile={state.isMobile}
+                    type={state.type}
                 />
             </div>
         </div>

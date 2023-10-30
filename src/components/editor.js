@@ -11,7 +11,7 @@ import './style.css';
 
 const Editor = (props) => {
     
-    const { handleChangeCode, handleDownload, handleChangeMode, handleChangeConfig, code, config, lang } = props;
+    const { handleChangeCode, handleDownload, handleChangeMode, handleChangeConfig, code, config, lang, handleTypeMermaid } = props;
     
     const editorRef = useRef(null);
     const divRef = useRef(null); // get width of editor
@@ -98,6 +98,7 @@ const Editor = (props) => {
             const position = model.getPositionAt(model.getValueLength());
             editorRef.current.setPosition(position);
             setState(prev => ({...prev, count: prev.count + 1, url: letters.trim()}));
+            handleTypeMermaid(letters.trim());
         };
     },[code]);
 
@@ -128,6 +129,7 @@ const Editor = (props) => {
             const firstLineText = removeInitText.split('\n')[0]; // get first word of first line
             const letters = firstLineText?.split(' ')?.[0]?.replace(/[^a-zA-Z0-9]/g, ''); // remove all character except letters and numbers
             setState(prev => ({...prev, count: prev.count + 1, url: letters.trim()}));
+            handleTypeMermaid(letters.trim());
         }
     },[code]);
 

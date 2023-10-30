@@ -219,6 +219,9 @@
 .mermaid {
     width: 100%;
     height: 100%;
+}
+
+.not-pie-chart {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -234,6 +237,25 @@
     max-width: none !important;
     max-height: none !important;
 }
+
+[aria-roledescription="pie"], [aria-roledescription="gantt"] {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media all and (max-width: 799px){
+    [aria-roledescription="pie"] g:nth-of-type(2) {
+        scale: 0.6;
+
+        &.legend {
+            scale: 1 !important;
+        }
+    };
+};
+
 
 .error-icon {
     display: none;

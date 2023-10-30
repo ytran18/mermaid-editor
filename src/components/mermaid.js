@@ -10,7 +10,7 @@ mermaid.initialize({
 
 const Mermaid = React.forwardRef((props, ref) => {
 
-    const { code, mode, config, fileName } = props;
+    const { code, mode, config, fileName, isMobile, type } = props;
 
     const [state, setState] = useState({
         errMessage: '',
@@ -36,6 +36,11 @@ const Mermaid = React.forwardRef((props, ref) => {
     useEffect(() => {
         const onHandleMermaidData = async (value) => {
             const mermaidChart = document.getElementById("mermaid-chart");
+            if (type === 'pie') {
+                if (mermaidChart.classList.contains('not-pie-chart')) {
+                    mermaidChart.classList.remove('not-pie-chart');
+                };
+            };
             
             if (mermaidChart && mode === 'mermaid') {
                 const isValidContent = await onCheckError(value);
@@ -130,7 +135,7 @@ const Mermaid = React.forwardRef((props, ref) => {
                                 </div>
                             </div>
                             <TransformComponent>
-                                <div ref={ref} id="mermaid-chart" className={`mermaid ${state.isErr ? 'opacity': ''}`}></div>
+                                <div ref={ref} id="mermaid-chart" className={`mermaid not-pie-chart ${state.isErr ? 'opacity': ''}`}></div>
                                 <div className="err-wrapper">
                                     { state.isErr && (
                                         state.errArray?.map((item, index) => {
