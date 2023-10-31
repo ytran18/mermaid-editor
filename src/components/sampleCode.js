@@ -7,20 +7,20 @@ const SampleCode = (props) => {
     const { isToggle, handleChangeCode, handleChangeSample } = props;
 
     const sample = [
-        { label: 'C4', code: 'c4' },
-        { label: 'Git', code: 'git' },
+        { label: 'Flow', code: 'flow' },
+        { label: 'Sequence', code: 'sequence' },
+        { label: 'Class', code: 'class' },
+        { label: 'State', code: 'state' },
+        { label: 'ER', code: 'er' },
         { label: 'User Journey', code: 'journey' },
         { label: 'Gantt', code: 'gantt' },
-        { label: 'Mindmap', code: 'mindmap' },
-        { label: 'Flow', code: 'flow' },
-        { label: 'Quadrant Chart', code: 'quadrant' },
-        { label: 'State', code: 'state' },
-        { label: 'Timeline', code: 'timeline' },
-        { label: 'Class', code: 'class' },
-        { label: 'ER', code: 'er' },
         { label: 'Pie', code: 'pie' },
-        { label: 'Sequence', code: 'sequence' },
+        { label: 'Quadrant Chart', code: 'quadrant' },
         { label: 'Requirement', code: 'requirement' },
+        { label: 'Git', code: 'git' },
+        { label: 'C4', code: 'c4' },
+        { label: 'Mindmap', code: 'mindmap' },
+        { label: 'Timeline', code: 'timeline' },
         { label: 'Sankey', code: 'sankey' }
     ];
 
