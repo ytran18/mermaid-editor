@@ -4,6 +4,7 @@ import * as monaco from 'monaco-editor';
 import { Editor as MonacoEditor } from "@monaco-editor/react";
 
 import Actions from "./actions.js";
+import SampleCode from "./sampleCode.js";
 
 import { initEditor } from '../assets/mermaidTheme.js';
 
@@ -22,7 +23,10 @@ const Editor = (props) => {
         showActions: false,
         divWidth: null,
         typeMermaid: '',
-        url: 'default'
+        url: 'default',
+        showDownloadOption: false,
+        showSampleCode: false,
+        sampleMermaid: '',
     });
 
     const options = {
@@ -123,8 +127,7 @@ const Editor = (props) => {
 
     useEffect(() => {
         if (state.count > 2) {
-            const model = editorRef.current.getModel(); // get value of monaco editor
-            const removeTitleText = model.getValue().replace(/---[\s\S]*?---/g, '').trim(); // remove title if has
+            const removeTitleText = code.replace(/---[\s\S]*?---/g, '').trim(); // remove title if has
             const removeInitText = removeTitleText.replace(/%%(.*?)%%/gs, '').trim(); //remove init if has
             const firstLineText = removeInitText.split('\n')[0]; // get first word of first line
             const letters = firstLineText?.split(' ')?.[0]?.replace(/[^a-zA-Z0-9]/g, ''); // remove all character except letters and numbers
@@ -167,6 +170,14 @@ const Editor = (props) => {
         window.open(openurl, '_blank');
     };
 
+    const handleChangeSample = (type) => {
+        setState(prev => ({...prev, sampleMermaid: type, showActions: false}));
+    };
+    
+    useEffect(() => {
+        editorRef.current.setValue(code || '');
+    },[state.sampleMermaid]);
+
     return (
         <div id="editor" className="editor" ref={divRef}>
             <div className="editor-top">
@@ -189,26 +200,44 @@ const Editor = (props) => {
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                     </svg>
                     {state.showActions && (
-                        <Actions handleDownload={handleDownload} handleDocument={handleDocument}/>
+                        <Actions 
+                            handleDownload={handleDownload} 
+                            handleDocument={handleDocument} 
+                            handleChangeCode={handleChangeCode} 
+                            handleChangeSample={handleChangeSample} 
+                        />
                     )}
                 </div>
                 <div className={`top-right ${state.divWidth < 518 ? 'hidden': ''}`}>
-                    <div className="png-button" onClick={() => handleDownload('png')}>
+
+                    <div className="download-mermaid" onClick={() => setState(prev => ({...prev, showDownloadOption: !prev.showDownloadOption, showSampleCode: false}))}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" width='18' height='18' viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style={{marginRight: '3px'}}>
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                         </svg>
-                        PNG
+                        {state.showDownloadOption && (
+                            <div className="download-option">
+                                <div className="png-button-download" onClick={() => handleDownload('png')}>
+                                    PNG
+                                </div>
+                                <div className="png-button-download" onClick={() => handleDownload('svg')}>
+                                    SVG
+                                </div>
+                            </div>
+                        )}
                     </div>
-                    <div className="png-button" onClick={() => handleDownload('svg')}>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" width='18' height='18' viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style={{marginRight: '3px'}}>
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                        </svg>
-                        SVG
-                    </div>
+                    
                     <div className="png-button" style={{marginRight: '3px'}} onClick={() => handleDownload('clipboard')}>
                         <svg xmlns="http://www.w3.org/2000/svg" width='18' height='18' fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
                         </svg>
+                    </div>
+                    <div className="sample-wrapper" style={{marginRight: '3px'}} onClick={() => setState(prev => ({...prev, showSampleCode: !prev.showSampleCode, showDownloadOption: false}))}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width='18' height='18' fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                        </svg>
+                        {state.showSampleCode && (
+                            <SampleCode handleChangeCode={handleChangeCode} handleChangeSample={handleChangeSample} />
+                        )}
                     </div>
                     <div className="png-button" style={{marginRight: '20px'}} onClick={handleDocument}>
                         <svg xmlns="http://www.w3.org/2000/svg" width='18' height='18' fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
