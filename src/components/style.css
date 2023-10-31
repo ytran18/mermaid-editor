@@ -254,15 +254,6 @@
     display: none;
 }
 
-@media all and (max-width: 799px){
-    [aria-roledescription="pie"] g:nth-of-type(2) {
-        scale: 0.6;
-
-        &.legend {
-            scale: 1 !important;
-        }
-    };
-};
 
 .monaco-editor:nth-of-type(1) {
     width: 100% !important;
@@ -341,32 +332,6 @@
     display: none;
 }
 
-@media all and (max-width: 768px){
-    .close-btn {
-        display: block;
-        margin-right: 5px;
-        cursor: pointer;
-    }
-
-    .content-btn {
-        display: none;
-    }
-}
-
-@media all and (max-width: 1180px){
-    .more {
-        display: flex;
-        height: 100%;
-        position: relative;
-        align-items: center;
-        cursor: pointer;
-        margin-right: 10px;
-    }
-
-    .top-right {
-        display: none;
-    }
-}
 
 /* actions */
 
@@ -440,5 +405,30 @@
 .scrollbar {
     &.horizontal {
         bottom: 35px !important;
+    }
+}
+
+@media all and (max-width: 768px){
+    [aria-roledescription="pie"] g:nth-of-type(2) {
+        scale: 0.6;
+        
+        &.legend {
+            scale: 1 !important;
+        }
+    };
+}
+
+@media all and (max-width: 1180px){
+    .more {
+        display: flex;
+        height: 100%;
+        position: relative;
+        align-items: center;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    
+    .top-right {
+        display: none;
     }
 }
