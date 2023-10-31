@@ -519,7 +519,21 @@
         
         &.legend {
             scale: 1 !important;
-        }
+        };
+    };
+
+    [aria-roledescription="sankey"] {
+        .nodes, .node-labels, .links {
+            scale: 0.6;
+        };
+    };
+}
+
+@media all and (max-width: 1000px){
+    [aria-roledescription="sankey"] {
+        .nodes, .node-labels, .links {
+            scale: 0.65;
+        };
     };
 }
 
