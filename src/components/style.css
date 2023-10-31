@@ -246,6 +246,14 @@
     justify-content: center;
 }
 
+.error-icon {
+    display: none;
+}
+
+.error-text {
+    display: none;
+}
+
 @media all and (max-width: 799px){
     [aria-roledescription="pie"] g:nth-of-type(2) {
         scale: 0.6;
@@ -255,15 +263,6 @@
         }
     };
 };
-
-
-.error-icon {
-    display: none;
-}
-
-.error-text {
-    display: none;
-}
 
 .monaco-editor:nth-of-type(1) {
     width: 100% !important;
