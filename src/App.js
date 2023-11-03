@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 
 import Mermaid from './components/mermaid';
 import Editor from './components/editor';
+import Message from './components/message';
 
 import './App.css';
 
@@ -16,6 +17,8 @@ function App() {
         lang: 'en',
         isMobile: false,
         type: '',
+        isShowCopyMessage: false,
+        statusCopy: false,
     });
 
     const diagramRef = useRef();
@@ -37,15 +40,8 @@ function App() {
     };
     
     const handleCopyToClipboard = (isCopied) => {
-        const data = {
-            type: 'mermaid',
-            code: state.code,
-            config: state.config,
-            state: 'CONNECTED',
-            isCopyToClipboard: isCopied,
-        }
-
-        window.parent.postMessage(JSON.stringify(data), "*");
+        const status = isCopied === 'SUCCESS' ? true : false;
+        setState(prev => ({...prev, isShowCopyMessage: true, statusCopy: status}));
     }
 
     const dataURItoBlob = (dataURI) => {
@@ -145,33 +141,46 @@ function App() {
         });
     }, []);
 
+    useEffect(() => {
+        if (state.isShowCopyMessage) {
+            setTimeout(() => {
+                setState(prev => ({...prev, isShowCopyMessage: false}));
+            },1500);
+        }
+    },[state.isShowCopyMessage]);
+
     return (
-        <div className="App">
-            <div id='ace-editor' className='left-panel'>
-                <Editor 
-                    handleChangeCode={handleChangeCode}
-                    handleDownload={handleDownload}
-                    handleChangeMode={handleChangeMode}
-                    handleChangeConfig={handleChangeConfig}
-                    code={state.code}
-                    config={state.config}
-                    lang={state.lang}
-                    handleTypeMermaid={handleTypeMermaid}
-                />
+        <>
+            <div className="App">
+                <div id='ace-editor' className='left-panel'>
+                    <Editor
+                        handleChangeCode={handleChangeCode}
+                        handleDownload={handleDownload}
+                        handleChangeMode={handleChangeMode}
+                        handleChangeConfig={handleChangeConfig}
+                        code={state.code}
+                        config={state.config}
+                        lang={state.lang}
+                        handleTypeMermaid={handleTypeMermaid}
+                    />
+                </div>
+                <div id="resizeHandler" className='resize-handler' />
+                <div className='right-panel'>
+                    <Mermaid
+                        mode={state.mode}
+                        code={state.code}
+                        config={state.config}
+                        ref={diagramRef}
+                        fileName={state.fileName}
+                        isMobile={state.isMobile}
+                        type={state.type}
+                    />
+                </div>
             </div>
-            <div id="resizeHandler" className='resize-handler' />
-            <div className='right-panel'>
-                <Mermaid 
-                    mode={state.mode}
-                    code={state.code} 
-                    config={state.config}
-                    ref={diagramRef}
-                    fileName={state.fileName}
-                    isMobile={state.isMobile}
-                    type={state.type}
-                />
-            </div>
-        </div>
+            {state.isShowCopyMessage && (
+                <Message status={state.statusCopy}/>
+            )}
+        </>
     );
 }
 

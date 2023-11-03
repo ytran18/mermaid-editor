@@ -551,3 +551,65 @@
         display: none;
     }
 }
+
+
+/* message */
+
+.message {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgb(89,89,89);
+    background-color:rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    z-index: 50;
+}
+
+.message-wrapper {
+    width: 300px;
+    height: 120px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    font-size: 18px;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.btn {
+    display: flex;
+    margin-top: 15px;
+}
+
+.btn-discard {
+    background: rgb(238,238,238);
+    padding: 7px 10px;
+    border-radius: 5px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.btn-discard:hover {
+    background: rgb(229,229,229);
+}
+
+.btn-cancel {
+    background: rgb(76,142,250);
+    padding: 7px 10px;
+    border-radius: 5px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    color: white;
+    margin-left: 5px;
+}
