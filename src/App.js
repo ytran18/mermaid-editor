@@ -21,19 +21,6 @@ function App() {
     const diagramRef = useRef();
 
     const handleChangeCode = (newCode) => {
-        const svg = handleDownload('svg', true)
-        const data = {
-            type: 'mermaid',
-            code: newCode,
-            config: state.config,
-            state: 'CONNECTED',
-            isCopyToClipboard: 'NOT COPPIED',
-            isChanged: true,
-            svg: svg,
-        }
-
-        window.parent.postMessage(JSON.stringify(data), "*");
-
         setState(prev => ({...prev, code: newCode}));
     };
 
@@ -42,17 +29,6 @@ function App() {
     };
 
     const handleChangeConfig = (config) => {
-        const data = {
-            type: 'mermaid',
-            code: state.code,
-            config: config,
-            state: 'CONNECTED',
-            isCopyToClipboard: 'NOT COPPIED',
-            isChanged: true,
-        }
-
-        window.parent.postMessage(JSON.stringify(data), "*");
-
         setState(prev => ({...prev, config: config}));
     };
 
@@ -144,55 +120,6 @@ function App() {
             return;
         }
     }
-
-    // handle contact from pms to mermaid 
-    useEffect(() => {
-        const data = {
-            type: 'mermaid',
-            code: state.code,
-            config: state.config,
-            state: state.stateConnect ? 'CONNECTED' : 'CONNECTING',
-            isCopyToClipboard: 'NOT COPPIED',
-        }
-        window.parent.postMessage(JSON.stringify(data), "*");
-    },[state.stateConnect])
-
-    useEffect(() => {
-        const handleIframeMessage = (event) => {
-            let parentData;
-            let content;
-
-            if (typeof event?.data !== 'string') return;
-            parentData = JSON.parse(event?.data);
-            let isOrigin = event.origin === window.location.origin;
-
-            // if (parentData?.isDev) {
-            //     isOrigin = event.origin !== window.location.origin;
-            // }
-            
-            if (isOrigin && parentData?.type === 'mermaid' || parentData?.isDev) {
-                if (parentData?.data?.content) {
-                    if (typeof parentData?.data?.content !== 'string') return;
-                    content = JSON.parse(parentData?.data?.content);
-                }
-
-                setState(prev => ({
-                    ...prev, 
-                    fileName: parentData?.data?.name, 
-                    stateConnect: true,
-                    code: content?.code || '', 
-                    config: content?.config || `{\n \t"theme": "default" \n}`,
-                    lang: parentData?.lang,
-                    isMobile: parentData?.isMobile,
-                }));
-            };
-        };
-      
-        window.addEventListener('message', handleIframeMessage);
-        return () => {
-            window.removeEventListener('message', handleIframeMessage);
-        };
-    },[])
 
     useEffect(() => {
         const resizer = document.getElementById('resizeHandler');
